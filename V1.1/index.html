@@ -17,10 +17,20 @@
     <body>
         <div class="container">
             <h1 class="main-header">Todo</h1>
-            <input type="text" name="todo-input" id="todo-input" placeholder="Add todo..." autofocus>
-            <div class="todos-container">
-                <ol class="todos">
-                </ol>
+            <button name="displayTodos" onclick="handlers.displayTodos()">Display Todos</button>
+            <button name="toggleAll" onclick="handlers.toggleAll()">Toggle All</button>
+            <div>
+                <button name="addTodo" onclick="handlers.addTodo()">Add Todo</button>
+                <input type="text" name="addTodoInput" id="addTodoInput" value="" placeholder="Add todo..." autofocus>
+            </div>
+            <div>
+                <button name="changeTodo" onclick="handlers.changeTodo()">Change Todo</button>
+                <input type="number" name="changeTodoPosition" id="changeTodoPosition">
+                <input type="text" name="changeTodoText" id="changeTodoText">
+            </div>
+            <div>
+                <button name="deleteTodo" onclick="handlers.deleteTodo()">Delete Todo</button>
+                <input type="number" name="deleteTodoPosition" id="deleteTodoPosition">
             </div>
         </div>
 

@@ -75,9 +75,32 @@ let todoList = {
         }
         this.displayTodos();
     }
-
 }
 
-todoList.addTodo("new text");
-todoList.addTodo("second todo");
-todoList.addTodo("third todo");
+let handlers = {
+
+    displayTodos: function() {
+        todoList.displayTodos();
+    },
+    toggleAll: function() {
+        todoList.toggleAll();
+    },
+    addTodo: function() {
+        let todoText = $("#addTodoInput").val();
+        todoList.addTodo(todoText);
+        $("#addTodoInput").val("");
+    },
+    changeTodo: function() {
+        let text = $("#changeTodoText").val();
+        let todoPosition = $("#changeTodoPosition").val();
+        todoList.changeTodo(text, todoPosition);
+        $("#changeTodoText").val("");
+        $("#changeTodoPosition").val("");
+    },
+    deleteTodo: function() {
+        let todoPosition = $("#deleteTodoPosition").val();
+        todoList.deleteTodo(todoPosition);
+        $("#deleteTodoPosition").val("");
+    }
+
+}
