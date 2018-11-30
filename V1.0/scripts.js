@@ -49,5 +49,3 @@ function deleteTodo(i) {
     // Delete multiple todos
 
     // Edit a todo
-
-    // Move a todo
