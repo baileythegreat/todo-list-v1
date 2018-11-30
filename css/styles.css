@@ -10,7 +10,28 @@
 /* =================
             Layout
 ================= */
+body,
+.container {
+    display: flex;
+    flex-direction: column;
+}
 
+body {
+    align-items: center;
+}
+
+.container {
+    align-items: flex-start;
+}
+
+/* =================
+              Styling
+================= */
+
+li {
+    list-style: none;
+    font-size: 1.5em;
+}
 
 
 /* =================
