@@ -1,0 +1,51 @@
+/* =================
+    Universal Selector
+================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =================
+            Layout
+================= */
+
+body,
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* === General Layout === */
+
+body {
+    align-items: center;
+}
+
+.container {
+    align-items: flex-start;
+}
+
+/* ===== Todos ===== */
+
+.todos {
+    padding-left: 20px;
+}
+
+.todo-checkbox {
+    display: inline-block;
+}
+
+/* =================
+              Styling
+================= */
+
+li {
+    font-size: 1.2em;
+}
+
+
+/* =================
+        Media Queries
+================= */
