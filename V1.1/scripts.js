@@ -90,20 +90,24 @@ let handlers = {
 
 let view = {
 
-    // It should have a way to display todos
+    // Displays todos as an html list
     displayTodos: function() {
-        let listLength = todoList.todos.length;
 
+        let listLength = todoList.todos.length;
         // Clears the todo list
         let todosUl = document.querySelector(".todo-list");
         todosUl.innerHTML = "";
 
+
         if (listLength === 0) {
-            document.write("<p>Your todo list is empty</p>")
+            let noTodos = document.createElement("p");
+            noTodos.innerHTML = "Your todo list is empty";
+            todosUl.appendChild(noTodos);
         } else {
             for (let i = 0; i < listLength; i++) {
                 let listItem = document.createElement("li");
                 let todoText = todoList.todos[i].todoText;
+                let deleteButton = this.createDeleteButton();
 
                 if (todoList.todos[i].completed === true) {
                      listItem.innerHTML = "(x) " + todoText;
@@ -111,8 +115,19 @@ let view = {
                  } else {
                      listItem.innerHTML = "( ) " + todoText;
                      todosUl.appendChild(listItem);
+                     todosUl.appendChild(deleteButton);
                  }
             }
         }
+    },
+    // Creates a delete button
+    createDeleteButton() {
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "deleteButton";
+
+        return deleteButton;
     }
+
+
 }
