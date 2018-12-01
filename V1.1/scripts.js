@@ -76,10 +76,17 @@ let handlers = {
         todoList.deleteTodo(todoPosition);
         view.displayTodos();
     },
-    toggleCompleted: function() {
-        let todoPosition = $("#toggleCompletedPosition").val();
+    toggleCompleted: function(todoPosition) {
         todoList.toggleCompleted(todoPosition);
-        $("#toggleCompletedPosition").val("");
+        view.displayTodos();
+    },
+    // Deletes all completed todos
+    deleteSelected: function() {
+        for ( let i = todoList.todos.length - 1; i >= 0; i-- ) {
+            if (todoList.todos[i].completed === true) {
+                todoList.deleteTodo(i);
+            }
+        }
         view.displayTodos();
     }
 }
@@ -101,6 +108,7 @@ let view = {
             todoList.todos.forEach(function(todo, position) {
                 let listItem = document.createElement("li");
                 let deleteButton = view.createDeleteButton();
+                let toggleButton = view.createToggleButton();
                 let todoText = todo.todoText;
 
                 // Indicates completed status
@@ -111,6 +119,7 @@ let view = {
                  }
                  // Creates list elements with an id and delete button, within the unordered list
                  listItem.id = position;
+                 listItem.appendChild(toggleButton);
                  listItem.appendChild(deleteButton);
                  todosUl.appendChild(listItem);
             })
@@ -124,6 +133,13 @@ let view = {
         return deleteButton;
     },
 
+    createToggleButton: function() {
+        let toggleButton = document.createElement("button");
+        toggleButton.textContent = "Toggle";
+        toggleButton.className = "toggleButton";
+        return toggleButton;
+    },
+
     setUpEventListeners: function () {
         // Delete event listener
         let todosUl = document.querySelector("ul");
@@ -132,6 +148,10 @@ let view = {
             if (elementClicked.className === "deleteButton") {
                 handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
             }
+            else if (elementClicked.className === "toggleButton") {
+                handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
+            }
+
         })
     }
 }
