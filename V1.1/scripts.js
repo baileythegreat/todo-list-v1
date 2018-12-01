@@ -64,12 +64,8 @@ let handlers = {
         $("#addTodoInput").val("");
         view.displayTodos();
     },
-    changeTodo: function() {
-        let text = $("#changeTodoText").val();
-        let todoPosition = $("#changeTodoPosition").val();
-        todoList.changeTodo(text, todoPosition);
-        $("#changeTodoText").val("");
-        $("#changeTodoPosition").val("");
+    changeTodo: function(todo, todoPosition) {
+        todoList.changeTodo(todo, todoPosition);
         view.displayTodos();
     },
     deleteTodo: function(todoPosition) {
@@ -89,6 +85,7 @@ let handlers = {
         }
         view.displayTodos();
     }
+
 }
 
 let view = {
@@ -107,15 +104,20 @@ let view = {
         } else {
             todoList.todos.forEach(function(todo, position) {
                 let listItem = document.createElement("li");
+                let itemDiv = document.createElement("div");
                 let deleteButton = view.createDeleteButton();
                 let toggleButton = view.createToggleButton();
                 let todoText = todo.todoText;
 
+                // Puts the text into its own div element (for event listener)
+                listItem.appendChild(itemDiv);
+                itemDiv.className = "listText";
+
                 // Indicates completed status
                 if (todo.completed === true) {
-                     listItem.innerHTML = "(x) " + todoText;
+                     itemDiv.innerHTML = "(x) " + todoText;
                  } else {
-                     listItem.innerHTML = "( ) " + todoText;
+                     itemDiv.innerHTML = "( ) " + todoText;
                  }
                  // Creates list elements with an id and delete button, within the unordered list
                  listItem.id = position;
@@ -132,12 +134,27 @@ let view = {
         deleteButton.className = "deleteButton";
         return deleteButton;
     },
-
+    // Creates a toggle button
     createToggleButton: function() {
         let toggleButton = document.createElement("button");
         toggleButton.textContent = "Toggle";
         toggleButton.className = "toggleButton";
         return toggleButton;
+    },
+
+    // Creates a new text input to edit text
+    openInputBox: function() {
+        let inputBox = document.createElement("input");
+        inputBox.className = "todoTextEdit";
+        inputBox.id = "edit";
+        return inputBox;
+    },
+
+    createEditButton: function() {
+        let editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        editButton.className = "editButton";
+        return editButton;
     },
 
     setUpEventListeners: function () {
@@ -151,7 +168,23 @@ let view = {
             else if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
+            else if (elementClicked.className === "listText") {
+                // Open new text box over the old todo
+                let editTodo = view.openInputBox();
+                // Create edit button
+                let editButton = view.createEditButton();
+                // Appends elements to div containing text and clears displayed text
+                elementClicked.innerHTML = "";
+                elementClicked.appendChild(editTodo);
+                elementClicked.appendChild(editButton);
+            }
+            else if (elementClicked.className === "editButton") {
+                let parent = elementClicked.parentNode;
+                let position = parseInt(parent.parentNode.id);
+                let newText = $("#edit").val();
 
+                handlers.changeTodo(newText, position);
+            }
         })
     }
 }
