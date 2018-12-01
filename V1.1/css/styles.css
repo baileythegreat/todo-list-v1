@@ -27,12 +27,17 @@ body {
     align-items: flex-start;
 }
 
+ul {
+    padding-left: 0;
+}
+
 /* =================
               Styling
 ================= */
 
 li {
     font-size: 1.2em;
+    list-style: none;
 }
 
 

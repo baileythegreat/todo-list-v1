@@ -169,14 +169,33 @@ let view = {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
             else if (elementClicked.className === "listText") {
-                // Open new text box over the old todo
+
+                // Open new text box and edit button
                 let editTodo = view.openInputBox();
-                // Create edit button
                 let editButton = view.createEditButton();
+
+                // Stores parent and parent id
+                let parent = elementClicked.parentNode;
+                let position = parent.id;
+
                 // Appends elements to div containing text and clears displayed text
                 elementClicked.innerHTML = "";
                 elementClicked.appendChild(editTodo);
                 elementClicked.appendChild(editButton);
+                editTodo.focus();
+                editTodo.id = editTodo.id + position; // id = edit + todoPosition (edit0)
+
+                let editBox = document.querySelector(".todoTextEdit");
+                editBox.addEventListener("keyup", function(e) {
+                    // Listens for escape key while editing todo items
+                    if (e.key === "Escape") {
+                        view.displayTodos();
+                    } // Listens for enter key and updates todo if pressed
+                    else if (e.key === "Enter") {
+                        let newText = $("#edit" + position).val();
+                        handlers.changeTodo(newText, position);
+                    }
+                })
             }
             else if (elementClicked.className === "editButton") {
                 let parent = elementClicked.parentNode;
@@ -186,6 +205,15 @@ let view = {
                 handlers.changeTodo(newText, position);
             }
         })
+
+        // Listens for enter input to add new todos
+        let addTodo = document.querySelector("#addTodoInput");
+        addTodo.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") {
+                handlers.addTodo();
+            }
+        })
+
     }
 }
 
