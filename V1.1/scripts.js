@@ -9,35 +9,13 @@ let todoList = {
             todoText: text,
             completed: false
         });
-        this.displayTodos();
-    },
-
-    // It should have a way to display todos
-    displayTodos: function() {
-        let listLength = this.todos.length;
-        if (listLength === 0) {
-            console.log("Your todo list is empty!")
-        } else {
-            console.log("My todos: ")
-            for (let i = 0; i < listLength; i++) {
-                let completedDisplay;
-                let todoText = this.todos[i].todoText;
-
-                if (this.todos[i].completed === true) {
-                     completedDisplay = "(x)";
-                     console.log(completedDisplay + " " + todoText);
-                 } else {
-                     completedDisplay = "( )";
-                     console.log(completedDisplay + " " + todoText);
-                 }
-            }
-        }
+        view.displayTodos();
     },
 
     // It should have a way to delete a todo
     deleteTodo: function(position) {
         this.todos.splice(position, 1);
-        this.displayTodos();
+        view.displayTodos();
     },
 
     // It should have a way to change a todo
@@ -46,13 +24,13 @@ let todoList = {
         let todoPosition = position;
 
         this.todos[todoPosition].todoText = newTodo;
-        this.displayTodos();
+        view.displayTodos();
     },
 
     // Switch a todo's completed property
     toggleCompleted: function(position) {
         this.todos[position].completed = !this.todos[position].completed;
-        this.displayTodos();
+        view.displayTodos();
     },
 
     // Switch the completed property of all todos to true or false
@@ -73,10 +51,11 @@ let todoList = {
                 this.todos[i].completed = true;
             }
         }
-        this.displayTodos();
+        view.displayTodos();
     }
 }
 
+// Handles html interactions
 let handlers = {
 
     displayTodos: function() {
@@ -101,6 +80,39 @@ let handlers = {
         let todoPosition = $("#deleteTodoPosition").val();
         todoList.deleteTodo(todoPosition);
         $("#deleteTodoPosition").val("");
+    },
+    toggleCompleted: function() {
+        let todoPosition = $("#toggleCompletedPosition").val();
+        todoList.toggleCompleted(todoPosition);
+        $("#toggleCompletedPosition").val("");
     }
+}
 
+let view = {
+
+    // It should have a way to display todos
+    displayTodos: function() {
+        let listLength = todoList.todos.length;
+
+        // Clears the todo list
+        let todosUl = document.querySelector(".todo-list");
+        todosUl.innerHTML = "";
+
+        if (listLength === 0) {
+            document.write("<p>Your todo list is empty</p>")
+        } else {
+            for (let i = 0; i < listLength; i++) {
+                let listItem = document.createElement("li");
+                let todoText = todoList.todos[i].todoText;
+
+                if (todoList.todos[i].completed === true) {
+                     listItem.innerHTML = "(x) " + todoText;
+                     todosUl.appendChild(listItem);
+                 } else {
+                     listItem.innerHTML = "( ) " + todoText;
+                     todosUl.appendChild(listItem);
+                 }
+            }
+        }
+    }
 }

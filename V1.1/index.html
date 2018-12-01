@@ -17,7 +17,7 @@
     <body>
         <div class="container">
             <h1 class="main-header">Todo</h1>
-            <button name="displayTodos" onclick="handlers.displayTodos()">Display Todos</button>
+            <button name="displayTodos" onclick="view.displayTodos()">Display Todos</button>
             <button name="toggleAll" onclick="handlers.toggleAll()">Toggle All</button>
             <div>
                 <button name="addTodo" onclick="handlers.addTodo()">Add Todo</button>
@@ -32,6 +32,14 @@
                 <button name="deleteTodo" onclick="handlers.deleteTodo()">Delete Todo</button>
                 <input type="number" name="deleteTodoPosition" id="deleteTodoPosition">
             </div>
+            <div>
+                <button name="toggleCompleted" onclick="handlers.toggleCompleted()">Toggle Todo</button>
+                <input type="number" name="toggleCompletedPosition" id="toggleCompletedPosition">
+            </div>
+
+            <ul class="todo-list">
+            </ul>
+
         </div>
 
         <!-- Links javascript index -->
