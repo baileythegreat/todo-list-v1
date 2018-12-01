@@ -76,10 +76,8 @@ let handlers = {
         $("#changeTodoText").val("");
         $("#changeTodoPosition").val("");
     },
-    deleteTodo: function() {
-        let todoPosition = $("#deleteTodoPosition").val();
+    deleteTodo: function(todoPosition) {
         todoList.deleteTodo(todoPosition);
-        $("#deleteTodoPosition").val("");
     },
     toggleCompleted: function() {
         let todoPosition = $("#toggleCompletedPosition").val();
@@ -98,7 +96,6 @@ let view = {
         let todosUl = document.querySelector(".todo-list");
         todosUl.innerHTML = "";
 
-
         if (listLength === 0) {
             let noTodos = document.createElement("p");
             noTodos.innerHTML = "Your todo list is empty";
@@ -111,23 +108,36 @@ let view = {
 
                 if (todoList.todos[i].completed === true) {
                      listItem.innerHTML = "(x) " + todoText;
+                     listItem.id = i;
+                     listItem.appendChild(deleteButton);
                      todosUl.appendChild(listItem);
                  } else {
                      listItem.innerHTML = "( ) " + todoText;
+                     listItem.id = i;
+                     listItem.appendChild(deleteButton);
                      todosUl.appendChild(listItem);
-                     todosUl.appendChild(deleteButton);
                  }
             }
         }
     },
     // Creates a delete button
-    createDeleteButton() {
+    createDeleteButton: function() {
         let deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.className = "deleteButton";
-
         return deleteButton;
+    },
+
+    setUpEventListeners: function () {
+        // Delete event listener
+        let todosUl = document.querySelector("ul");
+        todosUl.addEventListener("click", function(event) {
+            let elementClicked = event.target;
+            if (elementClicked.className === "deleteButton") {
+                handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+            }
+        })
     }
-
-
 }
+
+view.setUpEventListeners();
