@@ -97,6 +97,8 @@ let handlers = {
 
 // Handles display and events
 let view = {
+    // Tracks if user is currently editing a todo
+    editing: false,
 
     // Displays todos as an html list
     displayTodos: function() {
@@ -104,6 +106,8 @@ let view = {
         // Resets the todo list
         let todosUl = document.querySelector(".todo-list");
         todosUl.innerHTML = "";
+        // Resets editing status
+        view.editing = false;
         // Checks if the todos array is empty
         if (listLength === 0) {
             let noTodos = document.createElement("p");
@@ -168,19 +172,20 @@ let view = {
     },
 
     setUpEventListeners: function () {
-
+        // Listens for click events on the individual toggle input
         let todosUl = document.querySelector("ul");
         todosUl.addEventListener("click", function(event) {
             let elementClicked = event.target;
             if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
-            else if (elementClicked.className === "listText") {
-                // Deselects open edit boxes if another one is opened
-                let editBox = document.querySelector(".todoTextEdit");
-                if (editBox) {
-                    view.displayTodos();
-                }
+        })
+        // Sets up click event listener for entire site
+        let siteBody = document.querySelector("html");
+        siteBody.addEventListener("click", function(event) {
+            let elementClicked = event.target;
+            if (elementClicked.className !== "todoTextEdit" && view.editing === true) {
+                view.displayTodos();
             }
         })
         // Allows user to edits todos if existing todo is doubleclicked
@@ -188,6 +193,7 @@ let view = {
             let elementClicked = event.target;
             if (elementClicked.className === "listText") {
                 view.openEdit(elementClicked);
+                view.editing = true;
                 let editBox = document.querySelector(".todoTextEdit");
                 editBox.addEventListener("keyup", function(e) {
                     // Listens for escape key while editing todo items
@@ -200,7 +206,6 @@ let view = {
                 })
             }
         })
-
         // Listens for enter input to add new todos
         let addTodo = document.querySelector("#addTodoInput");
         addTodo.addEventListener("keyup", function(e) {

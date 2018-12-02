@@ -18,12 +18,14 @@
         <div class="container">
             <h1 class="main-header">todos</h1>
             <div class="wrapper">
-                <div>
-                    <input type="text" name="addTodoInput" id="addTodoInput" value="" placeholder="Add todo..." autofocus>
-                </div>
+                <div class="content-wrapper">
+                    <div>
+                        <input type="text" name="addTodoInput" id="addTodoInput" value="" placeholder="Add todo..." autofocus>
+                    </div>
 
-                <ul class="todo-list">
-                </ul>
+                    <ul class="todo-list">
+                    </ul>
+                </div>
                 <div class="eventButtons">
                     <button class="button" name="toggleAll" onclick="handlers.toggleAll()">Select All</button>
                     <button class="button" name="deleteSelected" onclick="handlers.deleteSelected()">Clear Selected</button>
