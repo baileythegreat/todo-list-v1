@@ -66,9 +66,18 @@ let handlers = {
         $("#addTodoInput").val("");
         view.displayTodos();
     },
-    changeTodo: function(todo, todoPosition) {
-        todoList.changeTodo(todo, todoPosition);
-        view.displayTodos();
+    changeTodo: function(elementClicked) {
+        let parent = elementClicked.parentNode;
+        let position = parent.parentNode.id;
+        let newText = $("#edit" + position).val();
+
+        if (!newText) {
+            view.displayTodos();
+        }
+        else {
+            todoList.changeTodo(newText, position);
+            view.displayTodos();
+        }
     },
     deleteTodo: function(todoPosition) {
         todoList.deleteTodo(todoPosition);
@@ -145,7 +154,7 @@ let view = {
     },
 
     // Creates a new text input to edit text
-    openInputBox: function() {
+    createInputBox: function() {
         let inputBox = document.createElement("input");
         inputBox.className = "todoTextEdit";
         inputBox.id = "edit";
@@ -159,6 +168,22 @@ let view = {
         return editButton;
     },
 
+    openEdit: function(elementClicked) {
+        // Open new text box and edit button
+        let editTodo = view.createInputBox();
+        let editButton = view.createEditButton();
+
+        let parent = elementClicked.parentNode;
+        let position = parent.id;
+
+        // Appends elements to div containing text and clears displayed text
+        elementClicked.innerHTML = "";
+        elementClicked.appendChild(editTodo);
+        elementClicked.appendChild(editButton);
+        editTodo.focus();   // Automatically focus on edit text box
+        editTodo.id = editTodo.id + position; // id = edit + todoPosition (edit0)
+    },
+
     setUpEventListeners: function () {
         // Delete event listener
         let todosUl = document.querySelector("ul");
@@ -170,38 +195,22 @@ let view = {
             else if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
-
             else if (elementClicked.className === "editButton") {
-                let parent = elementClicked.parentNode;
-                let position = parseInt(parent.parentNode.id);
-                let newText = $("#edit").val();
-
-                if (!newText) {
+                handlers.changeTodo(elementClicked);
+            }
+            else if (elementClicked.className === "listText") {
+                // Deselects open edit boxes if another one is opened
+                let editBox = document.querySelector(".todoTextEdit");
+                if (editBox) {
                     view.displayTodos();
-                }
-                else {
-                    handlers.changeTodo(newText, position);
                 }
             }
         })
+        // Allows user to edits todos if existing todo is doubleclicked
         todosUl.addEventListener("dblclick", function(event) {
             let elementClicked = event.target;
             if (elementClicked.className === "listText") {
-                // Open new text box and edit button
-                let editTodo = view.openInputBox();
-                let editButton = view.createEditButton();
-
-                // Stores parent and parent id
-                let parent = elementClicked.parentNode;
-                let position = parent.id;
-
-                // Appends elements to div containing text and clears displayed text
-                elementClicked.innerHTML = "";
-                elementClicked.appendChild(editTodo);
-                elementClicked.appendChild(editButton);
-                editTodo.focus();   // Automatically focus on edit text box
-                editTodo.id = editTodo.id + position; // id = edit + todoPosition (edit0)
-
+                view.openEdit(elementClicked);
                 let editBox = document.querySelector(".todoTextEdit");
                 editBox.addEventListener("keyup", function(e) {
                     // Listens for escape key while editing todo items
@@ -209,13 +218,7 @@ let view = {
                         view.displayTodos();
                     } // Listens for enter key and updates todo if pressed
                     else if (e.key === "Enter") {
-                        let newText = $("#edit" + position).val();
-                        if (!newText) {
-                            view.displayTodos();
-                        }
-                        else {
-                            handlers.changeTodo(newText, position);
-                        }
+                        handlers.changeTodo(editBox);
                     }
                 })
             }
@@ -232,8 +235,3 @@ let view = {
 }
 
 view.setUpEventListeners();
-
-
-// Todo:
-// Make editing require double click (x)
-// Deselect currently editted item if clicked off of
