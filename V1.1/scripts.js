@@ -79,10 +79,6 @@ let handlers = {
             view.displayTodos();
         }
     },
-    deleteTodo: function(todoPosition) {
-        todoList.deleteTodo(todoPosition);
-        view.displayTodos();
-    },
     toggleCompleted: function(todoPosition) {
         todoList.toggleCompleted(todoPosition);
         view.displayTodos();
@@ -99,6 +95,7 @@ let handlers = {
 
 }
 
+// Handles display and events
 let view = {
 
     // Displays todos as an html list
@@ -116,8 +113,10 @@ let view = {
             todoList.todos.forEach(function(todo, position) {
                 let listItem = document.createElement("li");
                 let itemDiv = document.createElement("div");
-                let deleteButton = view.createDeleteButton();
+                // Add toggle button
                 let toggleButton = view.createToggleButton();
+                listItem.appendChild(toggleButton);
+                // Define text
                 let todoText = todo.todoText;
 
                 // Puts the text into its own div element (for event listener)
@@ -132,23 +131,14 @@ let view = {
                  }
                  // Creates list elements with an id and delete button, within the unordered list
                  listItem.id = position;
-                 listItem.appendChild(toggleButton);
-                 listItem.appendChild(deleteButton);
                  todosUl.appendChild(listItem);
             })
         }
     },
-    // Creates a delete button
-    createDeleteButton: function() {
-        let deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "deleteButton";
-        return deleteButton;
-    },
+
     // Creates a toggle button
     createToggleButton: function() {
         let toggleButton = document.createElement("button");
-        toggleButton.textContent = "Toggle";
         toggleButton.className = "toggleButton";
         return toggleButton;
     },
@@ -189,10 +179,7 @@ let view = {
         let todosUl = document.querySelector("ul");
         todosUl.addEventListener("click", function(event) {
             let elementClicked = event.target;
-            if (elementClicked.className === "deleteButton") {
-                handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
-            }
-            else if (elementClicked.className === "toggleButton") {
+            if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
             else if (elementClicked.className === "editButton") {
