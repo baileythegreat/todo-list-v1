@@ -5,10 +5,12 @@ let todoList = {
 
     // Allows adding new todos
     addTodo: function(text) {
-        todoList.todos.push({
-            todoText: text,
-            completed: false
-        });
+        if (text !== "") {
+            todoList.todos.push({
+                todoText: text,
+                completed: false
+            });
+        }
     },
 
     // Allows deleting a todo
@@ -168,8 +170,23 @@ let view = {
             else if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
-            else if (elementClicked.className === "listText") {
 
+            else if (elementClicked.className === "editButton") {
+                let parent = elementClicked.parentNode;
+                let position = parseInt(parent.parentNode.id);
+                let newText = $("#edit").val();
+
+                if (!newText) {
+                    view.displayTodos();
+                }
+                else {
+                    handlers.changeTodo(newText, position);
+                }
+            }
+        })
+        todosUl.addEventListener("dblclick", function(event) {
+            let elementClicked = event.target;
+            if (elementClicked.className === "listText") {
                 // Open new text box and edit button
                 let editTodo = view.openInputBox();
                 let editButton = view.createEditButton();
@@ -182,7 +199,7 @@ let view = {
                 elementClicked.innerHTML = "";
                 elementClicked.appendChild(editTodo);
                 elementClicked.appendChild(editButton);
-                editTodo.focus();
+                editTodo.focus();   // Automatically focus on edit text box
                 editTodo.id = editTodo.id + position; // id = edit + todoPosition (edit0)
 
                 let editBox = document.querySelector(".todoTextEdit");
@@ -193,16 +210,14 @@ let view = {
                     } // Listens for enter key and updates todo if pressed
                     else if (e.key === "Enter") {
                         let newText = $("#edit" + position).val();
-                        handlers.changeTodo(newText, position);
+                        if (!newText) {
+                            view.displayTodos();
+                        }
+                        else {
+                            handlers.changeTodo(newText, position);
+                        }
                     }
                 })
-            }
-            else if (elementClicked.className === "editButton") {
-                let parent = elementClicked.parentNode;
-                let position = parseInt(parent.parentNode.id);
-                let newText = $("#edit").val();
-
-                handlers.changeTodo(newText, position);
             }
         })
 
@@ -213,8 +228,12 @@ let view = {
                 handlers.addTodo();
             }
         })
-
     }
 }
 
 view.setUpEventListeners();
+
+
+// Todo:
+// Make editing require double click (x)
+// Deselect currently editted item if clicked off of
