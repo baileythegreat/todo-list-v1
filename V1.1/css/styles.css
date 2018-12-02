@@ -76,14 +76,14 @@ h1 {
 }
 
 li {
-    font-size: 1.4em;
+    font-size: 1.2em;
     list-style: none;
     padding: 8px 1em;
     border-top: 1px solid lightgray;
 }
 
 p {
-    padding: 4px 2em;
+    padding: 4px 1em;
     margin: 5px 0;
     font-size: 1.2em;
 }
@@ -110,10 +110,6 @@ p {
     -webkit-appearance: none;
 }
 
-/* .toggleButton .checkmark:after {
-
-} */
-
 .todoTextEdit {
     font-weight: 200;
     height: 35px;
@@ -136,14 +132,16 @@ input:focus {
     outline: none !important;
 }
 
-/* .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-} */
+ .toggleButton:hover {
+    background-color: rgba(0, 0, 0, 3%);
+}
 
- .toggleButton:checked /* ~ .checkmark:after */ {
-    background-color: rgba(0, 0, 0, .1);
+.toggleButton:checked {
+    background-color: rgba(0, 0, 0, 10%);
+}
+
+.toggleButton:checked  ~ .listText strike {
+    color: rgba(0, 0, 0, 33%);
 }
 
 /* =================
@@ -153,6 +151,14 @@ input:focus {
 @media (min-width: 568px) {
     .container {
         width: 500px
+    }
+
+    li {
+        font-size: 1.4em;
+    }
+
+    p {
+        padding: 4px 1.5em;
     }
 }
 
