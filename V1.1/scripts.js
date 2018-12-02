@@ -125,9 +125,10 @@ let view = {
 
                 // Indicates completed status
                 if (todo.completed === true) {
-                     itemDiv.innerHTML = "(x) " + todoText;
+                     itemDiv.innerHTML = todoText.strike();
+                     toggleButton.checked = true;
                  } else {
-                     itemDiv.innerHTML = "( ) " + todoText;
+                     itemDiv.innerHTML = todoText;
                  }
                  // Creates list elements with an id and delete button, within the unordered list
                  listItem.id = position;
@@ -138,8 +139,9 @@ let view = {
 
     // Creates a toggle button
     createToggleButton: function() {
-        let toggleButton = document.createElement("button");
+        let toggleButton = document.createElement("input");
         toggleButton.className = "toggleButton";
+        toggleButton.type = "checkbox";
         return toggleButton;
     },
 
@@ -151,17 +153,9 @@ let view = {
         return inputBox;
     },
 
-    createEditButton: function() {
-        let editButton = document.createElement("button");
-        editButton.textContent = "Edit";
-        editButton.className = "editButton";
-        return editButton;
-    },
-
     openEdit: function(elementClicked) {
         // Open new text box and edit button
         let editTodo = view.createInputBox();
-        let editButton = view.createEditButton();
 
         let parent = elementClicked.parentNode;
         let position = parent.id;
@@ -169,21 +163,17 @@ let view = {
         // Appends elements to div containing text and clears displayed text
         elementClicked.innerHTML = "";
         elementClicked.appendChild(editTodo);
-        elementClicked.appendChild(editButton);
         editTodo.focus();   // Automatically focus on edit text box
         editTodo.id = editTodo.id + position; // id = edit + todoPosition (edit0)
     },
 
     setUpEventListeners: function () {
-        // Delete event listener
+
         let todosUl = document.querySelector("ul");
         todosUl.addEventListener("click", function(event) {
             let elementClicked = event.target;
             if (elementClicked.className === "toggleButton") {
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
-            }
-            else if (elementClicked.className === "editButton") {
-                handlers.changeTodo(elementClicked);
             }
             else if (elementClicked.className === "listText") {
                 // Deselects open edit boxes if another one is opened

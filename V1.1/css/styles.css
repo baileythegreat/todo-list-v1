@@ -11,36 +11,115 @@
             Layout
 ================= */
 
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: mintcream;
+}
+
 body,
 .container {
     display: flex;
     flex-direction: column;
 }
 
-/* === General Layout === */
+li,
+.buttons {
+    display: flex;
+}
 
-body {
+body,
+.container,
+li {
     align-items: center;
 }
 
+/* === General Layout === */
+
 .container {
-    align-items: flex-start;
+    width: 90%;
+    margin-top: 3em;
+}
+
+.wrapper {
+    background-color: white;
+    width: 100%;
+    padding: 1em;
+    box-shadow: 0 0 5px;
 }
 
 ul {
     padding-left: 0;
 }
 
+.listText {
+    padding-left: 10px;
+}
+
 /* =================
               Styling
 ================= */
+h1 {
+    font-size: 5em;
+    font-weight: 100;
+    margin-bottom: 20px;
+}
 
 li {
     font-size: 1.2em;
     list-style: none;
+    padding: 8px 0;
+    border-top: 1px solid lightgray;
 }
 
+.listText,
+.button,
+#addTodoInput,
+.editButton,
+p {
+    font-weight: 300;
+}
+
+.button,
+.editButton {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.todoTextEdit {
+    font-weight: 300;
+    height: 35px;
+}
+
+#addTodoInput {
+    width: 100%;
+    height: 2em;
+    padding: 5px;
+    font-size: 1.3em;
+    border-radius: 5px;
+}
+
+input:focus {
+    outline: none !important;
+    border: 1px solid mintcream;
+    box-shadow: 0 0 3px;
+}
 
 /* =================
         Media Queries
 ================= */
+
+@media (min-width: 568px) {
+    .container {
+        width: 500px
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 600px;
+    }
+
+    h1 {
+        font-size: 6em;
+    }
+}
